@@ -6,11 +6,12 @@
 #include "glm/vec3.hpp"
 #include "glm/glm.hpp"
 
-BBox::BBox(ObjectList *listaObjetos) {
+BBox::BBox(ObjectList *listaOrigen) {
 	BBox *optr, *closeoptr, *boxptr;
 	float closedist, newdist;
 	ObjectList *listaArbol = new ObjectList();
 	ObjectList *auxList = new ObjectList();
+	ObjectList *listaObjetos = listaOrigen->Clone();
 	int offset = 0;
 
 	while (listaObjetos->Length() > 1) {
@@ -150,7 +151,7 @@ Object* BBox::NearestInt(const glm::vec3& pos, const glm::vec3& dir, float& tnea
 		if (!isLeaf) {
 			while (optr != NULL) {
 				auxo = ((BBox*) optr)->NearestInt(pos, dir, aux, tnear);
-				if (auxo != NULL && aux < tnear) {
+				if (auxo != NULL && aux > TMIN) {
 					result = auxo;
 					tnear = aux;
 				}

@@ -27,11 +27,11 @@ public:
   ~List();
 
   /* Functions */
-  void Add(element e);  // Insert at the front of the list
-  element Pop();		// Extracts the first element of the list
-  element First();      // Returns the first element
-  element Next();       // Returns the next element
-  int Length();         // Length of list  
+  void Add(element e);		// Insert at the front of the list
+  element Pop();			// Extracts the first element of the list
+  element First();			// Returns the first element
+  element Next();			// Returns the next element
+  int Length();				// Length of list
 
 private:
 
@@ -92,8 +92,13 @@ inline element List<element>::Pop() {
 template <class element>
 inline element List<element>::First() {
   if (first != NULL)
-    next = first->next;
-  return first->e;
+  {
+	next = first->next;
+	return first->e;
+  }
+  else {
+    return NULL;
+  }
 }
 
 /* Returns the next object */

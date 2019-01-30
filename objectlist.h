@@ -26,6 +26,7 @@ class ObjectList : public List<Object*> {
 
 public:
 
+	ObjectList* ObjectList::Clone(); // Clones the list
 	/* Returns the nearest object in the direction of the ray. Returns a pointer to that object and 
 	   the t value of the intersection point, otherwise returns NULL */
 	Object* NearestInt(const glm::vec3& pos, const glm::vec3& dir, float& tnear, float tmax);

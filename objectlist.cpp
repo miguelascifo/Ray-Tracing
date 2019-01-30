@@ -12,7 +12,23 @@
 
 #include "objectlist.h"
 #include "limits.h"
+#include "bbox.h"
 
+
+
+/* Clones the list */
+ObjectList* ObjectList::Clone() {
+	ObjectList *newList = new ObjectList();
+	Object *optr = this->First();
+
+	while (optr != NULL)
+	{
+		newList->Add(new BBox(optr));
+		optr = this->Next();
+	}
+
+	return newList;
+}
 
 /* Returns the nearest object in the direction of the ray. Returns a pointer to that object and
    the t value of the intersection point, otherwise returns NULL */
