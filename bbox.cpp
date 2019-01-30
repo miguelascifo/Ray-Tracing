@@ -105,39 +105,30 @@ float distance(Object *a, Object *b) {
 
 
 float BBox::NearestInt(const glm::vec3& pos, const glm::vec3& dir) {
-	// La implementación de este método es igual que para la esfera. Debería cambiarse por un cubo.
-	glm::vec3 dif;
-	float A, B, C, aux;
-	float t1, t2;
-	float radius = glm::distance(center, box);
+	float result = 0;
 
-	A = glm::dot(dir, dir);
-	dif = pos - center;
-	B = 2.0f * glm::dot(dir, dif);
-	C = glm::dot(dif, dif) - radius * radius;
-
-	aux = (B * B) - (4 * A * C);
-
-	if (aux < 0.0) return 0;
-
-	if (aux == 0.0) {
-		return -B / 2.0f;
+	if (dir.x != 0.0)
+	{
+		float tx1 = (this->center.x - this->box.x - pos.x) / dir.x;
+		float tx2 = (this->center.x + this->box.x - pos.x) / dir.x;
+		result = TMIN < tx1 || TMIN < tx2;
 	}
 
-	aux = (float)glm::sqrt(aux);
-	t1 = (-B + aux) / (2.0f * A);
-	t2 = (-B - aux) / (2.0f * A);
+	if (!result && dir.y != 0.0)
+	{
+		float ty1 = (this->center.y - this->box.y - pos.y) / dir.y;
+		float ty2 = (this->center.y + this->box.y - pos.y) / dir.y;
+		result = TMIN < ty1 || TMIN < ty2;
+	}
 
-	if (TMIN < t1)
-		if (TMIN < t2)
-			return (t1 < t2) ? t1 : t2;
-		else
-			return t1;
+	if (!result && dir.z != 0.0)
+	{
+		float tz1 = (this->center.z - this->box.z - pos.z) / dir.z;
+		float tz2 = (this->center.z + this->box.z - pos.z) / dir.z;
+		result = TMIN < tz1 || TMIN < tz2;
+	}
 
-	if (TMIN < t2)
-		return t2;
-
-	return 0;
+	return result;
 }
 
 Object* BBox::NearestInt(const glm::vec3& pos, const glm::vec3& dir, float& tnear, float tmax) {
