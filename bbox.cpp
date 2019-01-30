@@ -1,4 +1,3 @@
-
 #include <algorithm>
 #include "bbox.h"
 #include "limits.h"
@@ -16,7 +15,8 @@ BBox::BBox(ObjectList *listaObjetos) {
 
 	while (listaObjetos->Length() > 1) {
 		optr = (BBox*)listaObjetos->Pop();
-		//listaArbol->Add(optr);
+		listaArbol->Add(optr);
+		optr = (BBox*)listaObjetos->Pop();
 
 		while (optr != NULL)
 		{
@@ -29,6 +29,9 @@ BBox::BBox(ObjectList *listaObjetos) {
 				if (newdist <= closedist) {
 					closedist = newdist;
 					closeoptr = boxptr;
+					
+					if (closedist == 0)
+						break;
 				}
 
 				boxptr = (BBox*)listaArbol->Next();
@@ -70,7 +73,7 @@ void BBox::Add(Object *child) {
 		Object *root = children->First();
 
 		children = new ObjectList();
-		children->Add(new BBox(child));
+		children->Add(new BBox(root));
 		isLeaf = false;
 	}
 
@@ -89,8 +92,8 @@ void BBox::Add(Object *child) {
 
 float distance(Object *a, Object *b) {
 	float dist = glm::distance(a->center, b->center);
-	dist = dist - glm::distance(a->center, a->box);
-	dist = dist - glm::distance(b->center, b->box);
+	dist = dist - std::sqrt(a->box.x * a->box.x + a->box.y * a->box.y + a->box.z * a->box.z);
+	dist = dist - std::sqrt(b->box.x * b->box.x + b->box.y * b->box.y + b->box.z * b->box.z);
 
 	//return dist > 0 ? dist : 0;
 
