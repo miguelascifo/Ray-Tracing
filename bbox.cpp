@@ -38,7 +38,7 @@ BBox::BBox(ObjectList *listaOrigen) {
 				boxptr = (BBox*)listaArbol->Next();
 			}
 
-			if (closeoptr == NULL || closedist > CLOSEDIST + offset) {
+			if (closeoptr == NULL || closedist > CLOSEDIST * offset) {
 				listaArbol->Add(optr);
 			}
 			else {
