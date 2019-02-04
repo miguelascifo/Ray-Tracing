@@ -96,40 +96,10 @@ float distance(Object *a, Object *b) {
 	dist = dist - std::sqrt(a->box.x * a->box.x + a->box.y * a->box.y + a->box.z * a->box.z);
 	dist = dist - std::sqrt(b->box.x * b->box.x + b->box.y * b->box.y + b->box.z * b->box.z);
 
-	//return dist > 0 ? dist : 0;
-
 	if (dist < 0)
 		dist = 0;
 	return dist;
 }
-
-
-/*float BBox::NearestInt(const glm::vec3& pos, const glm::vec3& dir) {
-	float result = 0;
-
-	if (dir.x != 0.0)
-	{
-		float tx1 = (this->center.x - this->box.x - pos.x) / dir.x;
-		float tx2 = (this->center.x + this->box.x - pos.x) / dir.x;
-		result = TMIN < tx1 || TMIN < tx2;
-	}
-
-	if (!result && dir.y != 0.0)
-	{
-		float ty1 = (this->center.y - this->box.y - pos.y) / dir.y;
-		float ty2 = (this->center.y + this->box.y - pos.y) / dir.y;
-		result = TMIN < ty1 || TMIN < ty2;
-	}
-
-	if (!result && dir.z != 0.0)
-	{
-		float tz1 = (this->center.z - this->box.z - pos.z) / dir.z;
-		float tz2 = (this->center.z + this->box.z - pos.z) / dir.z;
-		result = TMIN < tz1 || TMIN < tz2;
-	}
-
-	return result;
-}*/
 
 float BBox::NearestInt(const glm::vec3 &pos, const glm::vec3 &dir)
 {
@@ -193,11 +163,6 @@ float BBox::NearestInt(const glm::vec3 &pos, const glm::vec3 &dir)
 
 	if (tzmax < tmax)
 		tmax = tzmax;
-
-	//if (tmax > TMIN) {
-	//	return tmin;
-	//}
-	//else return 0;
 
 	return ((tmin < TFAR) && (tmax > TMIN));
 }

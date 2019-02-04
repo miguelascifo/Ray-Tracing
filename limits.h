@@ -14,7 +14,7 @@
 
 #define TFAR 10000.0  // Infinity
 #define TMIN 0.1      // Threshold to avoid self-occlusion
-#define CLOSEDIST 0.01  // Infinity
+#define CLOSEDIST 0.01
 
 
 #endif  // !defined _LIMITS_H_
