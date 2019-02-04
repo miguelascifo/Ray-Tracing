@@ -104,7 +104,7 @@ float distance(Object *a, Object *b) {
 }
 
 
-float BBox::NearestInt(const glm::vec3& pos, const glm::vec3& dir) {
+/*float BBox::NearestInt(const glm::vec3& pos, const glm::vec3& dir) {
 	float result = 0;
 
 	if (dir.x != 0.0)
@@ -129,6 +129,77 @@ float BBox::NearestInt(const glm::vec3& pos, const glm::vec3& dir) {
 	}
 
 	return result;
+}*/
+
+float BBox::NearestInt(const glm::vec3 &pos, const glm::vec3 &dir)
+{
+	float tmin,
+		tmax,
+		tymin,
+		tymax,
+		tzmin,
+		tzmax;
+	float divx = 1.0f / dir.x;
+	float divy = 1.0f / dir.y;
+	float divz = 1.0f / dir.z;
+
+	if (divx >= 0.0)
+	{
+		tmin = (this->center.x - this->box.x - pos.x) * divx;
+		tmax = (this->center.x + this->box.x - pos.x) * divx;
+	}
+	else
+	{
+		tmax = (this->center.x - this->box.x - pos.x) * divx;
+		tmin = (this->center.x + this->box.x - pos.x) * divx;
+	}
+
+	if (divy >= 0.0)
+	{
+		tymin = (this->center.y - this->box.y - pos.y) * divy;
+		tymax = (this->center.y + this->box.y - pos.y) * divy;
+	}
+	else
+	{
+		tymax = (this->center.y - this->box.y - pos.y) * divy;
+		tymin = (this->center.y + this->box.y - pos.y) * divy;
+	}
+
+	if ((tmin > tymax) || (tymin > tmax))
+		return false;
+
+	if (tymin > tmin)
+		tmin = tymin;
+
+	if (tymax < tmax)
+		tmax = tymax;
+
+	if (divz >= 0.0)
+	{
+		tzmin = (this->center.z - this->box.z - pos.z) * divz;
+		tzmax = (this->center.z + this->box.z - pos.z) * divz;
+	}
+	else
+	{
+		tzmax = (this->center.z - this->box.z - pos.z) * divz;
+		tzmin = (this->center.z + this->box.z - pos.z) * divz;
+	}
+
+	if ((tmin > tzmax) || (tzmin > tmax))
+		return false;
+
+	if (tzmin > tmin)
+		tmin = tzmin;
+
+	if (tzmax < tmax)
+		tmax = tzmax;
+
+	//if (tmax > TMIN) {
+	//	return tmin;
+	//}
+	//else return 0;
+
+	return ((tmin < TFAR) && (tmax > TMIN));
 }
 
 Object* BBox::NearestInt(const glm::vec3& pos, const glm::vec3& dir, float& tnear, float tmax) {
@@ -137,7 +208,7 @@ Object* BBox::NearestInt(const glm::vec3& pos, const glm::vec3& dir, float& tnea
 	float aux = 0.0f;
 
 	tnear = tmax;
-	if (tmin > 0.0f && tmin < tmax) {
+	if ((tmin > 0.0f) && (tmin < tmax)) {
 		optr = children->First();
 		if (!isLeaf) {
 			while (optr != NULL) {
